@@ -39,3 +39,39 @@ import cv2
 import scipy.misc
 import matplotlib.pyplot as plt
 %matplotlib inline
+
+# define function to load train, test, and validation datasets
+def load_dataset(path):
+    """
+    Loads the images from path.
+    
+    Args
+    ----------
+    path : String
+        Holds the path of the dataset
+
+    Returns
+    -------
+    Array
+        Two numpy arrays that holds the images and the targets.
+    """
+    data = load_files(path)
+    face_files = np.array(data['filenames'])
+    face_targets = np_utils.to_categorical(np.array(data['target']), 2)
+    return face_files, face_targets
+
+# load train, test, and validation datasets
+train_files, train_targets = load_dataset('/content/gdrive/MyDrive/DATASET/facesResNet/train')
+valid_files, valid_targets = load_dataset('/content/gdrive/MyDrive/DATASET/facesResNet/valid')
+test_files, test_targets = load_dataset('/content/gdrive/MyDrive/DATASET/facesResNet/test')
+
+
+# load list of dog names
+face_names = [item[20:-1] for item in sorted(glob("/content/gdrive/MyDrive/DATASET/facesResNet/train/*/"))]
+
+# print statistics about the dataset
+print('There are %d total face names.' % len(face_names))
+print('There are %s total face images.\n' % len(np.hstack([train_files, valid_files, test_files])))
+print('There are %d training face images.' % len(train_files))
+print('There are %d validation face images.' % len(valid_files))
+print('There are %d test face images.'% len(test_files))
