@@ -1,0 +1,32 @@
+import os
+import numpy as np
+import pandas as pd
+import seaborn as sn
+import tensorflow as tf
+import matplotlib.pyplot as plt
+from tensorflow.keras.utils import to_categorical
+from sklearn.model_selection import train_test_split
+from sklearn.metrics import confusion_matrix
+from tensorflow.keras.preprocessing.image import ImageDataGenerator
+from tensorflow.keras.preprocessing.image import img_to_array, load_img
+from tensorflow.keras.applications import EfficientNetB7, ResNet101V2, VGG19
+from tensorflow.keras.applications import Xception, InceptionResNetV2
+from tensorflow.keras.layers import Conv2D, MaxPooling2D, Flatten, BatchNormalization
+from tensorflow.keras.layers import Dense, Dropout, InputLayer, LeakyReLU
+from tensorflow.keras.layers import GlobalAveragePooling2D
+from tensorflow.keras.models import Sequential, Model
+from tensorflow.keras import optimizers
+from tensorflow.keras.callbacks import ReduceLROnPlateau, EarlyStopping
+from scipy.interpolate import make_interp_spline, BSpline
+
+
+# Initializing the Common Variables.
+
+input_shape=(128, 128, 3)
+batch_size = 32
+epochs = 10
+epoch_list = list(range(1, epochs+1))
+
+# Path to training & testing set.
+train_dir = './Datasets/filtered-dataset-full/training'
+test_dir = './Datasets/filtered-dataset-full/testing'
