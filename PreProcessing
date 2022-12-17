@@ -1,0 +1,41 @@
+
+from google.colab import drive
+drive.mount('/content/gdrive')
+%matplotlib inline
+import matplotlib.pyplot as plt
+from PIL import Image
+import numpy as np
+import math
+import copy
+import numpy as np
+!pip install keras_vggface
+!pip install keras_applications
+!pip install keras.engine.topology
+!pip install np_utils
+!pip install tensorflow
+from keras.utils.layer_utils import get_source_inputs
+from keras.utils import get_source_inputs
+from keras.utils.layer_utils import get_source_inputs
+from tensorflow import keras
+#import tensorflow as tf
+#from tensorflow.keras import layers
+#from keras import utils as np_utils
+#import tensorflow.keras
+from keras.utils.np_utils import to_categorical
+#from tensorflow.keras.layers import Layer, InputSpec
+from tensorflow.python.keras.layers import Layer, InputSpec
+#from keras.models import Sequential, Model
+#from keras.engine.topology import get_source_inputs
+#from keras.layers import Input, Dense, Flatten, Dropout, Activation, Lambda, Permute, Reshape
+from keras_vggface.vggface import VGGFace
+from keras_vggface import utils
+from keras.preprocessing import image
+from sklearn.datasets import load_files       
+from keras.utils import np_utils
+import numpy as np
+from glob import glob
+import pandas as pd
+import cv2
+import scipy.misc
+import matplotlib.pyplot as plt
+%matplotlib inline
