@@ -44,3 +44,103 @@ test_generator = test_datagen.flow_from_directory(test_dir,
                                                     target_size=(128, 128),
                                                     batch_size=batch_size,
                                                     class_mode='binary')
+
+ResNet50V2_model = ResNet50V2(input_shape=input_shape, include_top=False, weights="imagenet", classes=2)
+
+for i in range(50):
+    l = ResNet50V2_model.get_layer(index=i)
+    l.trainable = True
+
+
+model = Sequential()
+model.add(ResNet50V2_model)
+model.add(GlobalAveragePooling2D())
+model.add(Dense(units=1, activation='sigmoid'))
+
+
+model.compile(loss='binary_crossentropy',
+                optimizer=optimizers.Adam(lr=1e-6, beta_1=0.9, beta_2=0.999, epsilon=None, decay=0.0),
+                metrics=['accuracy'])
+
+
+
+reduce = ReduceLROnPlateau(monitor='val_loss', factor=0.1, patience=5, mode='auto')
+early_stopping = EarlyStopping(monitor='val_loss', min_delta=1e-4, patience=5, verbose=0, mode='auto')
+
+
+history = model.fit(train_generator, epochs=epochs, validation_data=test_generator)
+
+
+
+network_name = "ResNet50V2"
+
+try:
+    os.mkdir("./Reference_Data")
+    os.mkdir("./Reference_Data/Graphs")
+    os.mkdir("./Reference_Data/Summary")
+    os.mkdir("./Reference_Data/Model")
+except OSError:
+    pass
+
+try:
+    os.mkdir(os.path.join("./Reference_Data/Graphs", network_name))
+except OSError:
+    pass
+
+
+acc = np.linspace(min(epoch_list), max(epoch_list), 200) 
+val_acc = np.linspace(min(epoch_list), max(epoch_list), 200) 
+
+
+spl1 = make_interp_spline(epoch_list, history.history['accuracy'], k=3)
+y_smooth1 = spl1(acc)
+#define spline accuracy
+spl2 = make_interp_spline(epoch_list, history.history['val_accuracy'], k=3)
+y_smooth2 = spl2(val_acc)
+
+
+graph_1 = plt.subplots(1, 1)
+plt.suptitle('Training & Testing Accuracy v/s Number of Epochs.', fontsize=10)
+plt.plot(acc, y_smooth1, label='Train Accuracy')
+plt.plot(val_acc, y_smooth2, label='Validation Accuracy')
+plt.xticks(np.arange(1, epochs + 1, 1))
+plt.ylabel('Accuracy Value')
+plt.xlabel('Epoch')
+plt.title('Accuracy')
+plt.legend(loc="best")
+plt.savefig(os.path.join("./Reference_Data/Graphs", network_name, "AccuracyVEpochs.png"), dpi=300,
+            bbox_inches='tight')
+
+
+loss = np.linspace(min(epoch_list), max(epoch_list), 200) 
+val_loss = np.linspace(min(epoch_list), max(epoch_list), 200) 
+
+
+spl3 = make_interp_spline(epoch_list, history.history['loss'], k=3)
+y_smooth3 = spl3(loss)
+
+spl4 = make_interp_spline(epoch_list, history.history['val_loss'], k=3)
+y_smooth4 = spl4(val_loss)
+
+
+graph_2 = plt.subplots(1, 1)
+plt.suptitle('Training & Testing Loss v/s Number of Epochs.', fontsize=10)
+plt.plot(loss, y_smooth3, label='Train Loss')
+plt.plot(val_loss, y_smooth4, label='Validation Loss')
+plt.xticks(np.arange(1, epochs + 1, 1))
+plt.ylabel('Loss Value')
+plt.xlabel('Epoch')
+plt.title('Loss')
+plt.legend(loc="best")
+plt.savefig(os.path.join("./Reference_Data/Graphs", network_name, "LossVEpochs.png"), dpi=300, 
+            bbox_inches='tight')
+plt.show()
+
+
+
+with open("./Reference_Data/Summary/" + network_name + "summary.txt", 'w+') as f:
+    model.summary(print_fn=lambda x: f.write(x + '\n'))
+
+
+model.save('./Reference_Data/Model/' + network_name + '/')
+model.save('./Reference_Data/Model/' + network_name + '/' + network_name + '.h5')
