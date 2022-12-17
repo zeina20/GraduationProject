@@ -134,3 +134,46 @@ for video in all_videos:
          
 # Release the VideoCapture object  
   cap.release()
+  
+  def performance_viz(history, xc_length):
+    """
+    Visualizes training history.
+    
+    Args
+    ----------
+    history : Keras object
+        Holds the training history
+
+    Returns
+    -------
+    Empty.
+    """
+    train_loss = history_aug.history['loss']
+    val_loss = history_aug.history['val_loss']
+    train_acc = history_aug.history['acc']
+    val_acc = history_aug.history['val_acc']
+    xc = range(xc_length)
+
+    # Visualize Train vs Validation loss
+    plt.figure(1,figsize=(7,5))
+    plt.plot(xc,train_loss)
+    plt.plot(xc,val_loss)
+    plt.xlabel('Epochs')
+    plt.ylabel('Loss')
+    plt.title('Train_loss vs Val_loss')
+    plt.grid(True)
+    plt.legend(['train','val'])
+    print (plt.style.available)
+    plt.style.use(['classic'])
+    plt.show()
+    # Visualize Train vs Validation Accuracy
+    plt.figure(2,figsize=(7,5))
+    plt.plot(xc,train_acc)
+    plt.plot(xc,val_acc)
+    plt.xlabel('Epochs')
+    plt.ylabel('Acc')
+    plt.title('Train Acc vs Val Acc')
+    plt.grid(True)
+    plt.legend(['Train','Val'],loc=4)
+    plt.style.use(['classic'])
+    plt.show()
