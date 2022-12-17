@@ -30,3 +30,26 @@ epoch_list = list(range(1, epochs+1))
 # Path to training & testing set.
 train_dir = './Datasets/filtered-dataset-full/training'
 test_dir = './Datasets/filtered-dataset-full/testing'
+train_dir_fake, test_dir_fake = os.path.join(train_dir, 'fake'), os.path.join(test_dir, 'fake')
+train_dir_real, test_dir_real = os.path.join(train_dir, 'real'), os.path.join(test_dir, 'real')
+
+train_fake_fnames, test_fake_fnames = os.listdir(train_dir_fake), os.listdir(test_dir_fake)
+train_real_fnames, test_real_fnames = os.listdir(train_dir_real), os.listdir(test_dir_real)
+
+# Training Data Generator.
+train_datagen = ImageDataGenerator(rescale=1./255.)
+
+# Testing Data Generator.
+test_datagen = ImageDataGenerator(rescale=1./255.)
+
+# Flow training images in batches of 64 using train_datagen generator
+train_generator = train_datagen.flow_from_directory(train_dir,
+                                                    target_size=(128, 128),
+                                                    batch_size=batch_size,
+                                                    class_mode='binary')
+
+# Flow test images in batches of 64 using test_datagen generator
+test_generator = test_datagen.flow_from_directory(test_dir,
+                                                  target_size=(128, 128),
+                                                  batch_size=batch_size,
+                                                  class_mode='binary')
