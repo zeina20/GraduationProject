@@ -28,3 +28,19 @@ train_dir_real, test_dir_real = os.path.join(train_dir, 'real'), os.path.join(te
 
 train_fake_fnames, test_fake_fnames = os.listdir(train_dir_fake), os.listdir(test_dir_fake)
 train_real_fnames, test_real_fnames = os.listdir(train_dir_real), os.listdir(test_dir_real)
+train_datagen = ImageDataGenerator(rescale=1./255.)
+
+
+test_datagen = ImageDataGenerator(rescale=1./255.)
+
+
+train_generator = train_datagen.flow_from_directory(train_dir,
+                                                    target_size=(128, 128),
+                                                    batch_size=batch_size,
+                                                    class_mode='binary')
+
+
+test_generator = test_datagen.flow_from_directory(test_dir,
+                                                    target_size=(128, 128),
+                                                    batch_size=batch_size,
+                                                    class_mode='binary')
