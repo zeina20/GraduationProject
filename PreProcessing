@@ -102,3 +102,35 @@ for video in all_videos:
     #gray = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)  
  
     # Detect the faces 
+     faces = face_cascade.detectMultiScale(img, scaleFactor=1.1, minNeighbors=2)  
+  wmax=0
+  hmax=0
+  ImageFolder ='/content/gdrive/MyDrive/Fake-Face-Detection-DeepFakes-CNN-master/faces/train'
+    # Draw the rectangle around each face  
+  for (x, y, w, h) in faces: 
+    if w>wmax and h>hmax:
+      wmax=w
+      hmax=h
+  #print(wmax)
+  #print(hmax)
+  for (x, y, w, h) in faces: 
+    img_number=img_number+1
+    if w == wmax and h==hmax : 
+        cv2.rectangle(img, (x, y), (x+w, y+h), (255, 0, 0), 1)  
+        crop_img = img[y:y+h, x:x+w]
+        li.append(crop_img)
+        cv2.imwrite("/content/gdrive/MyDrive/Fake-Face-Detection-DeepFakes-CNN-master/faces/train/image_"+str(img_number)+".jpg",crop_img)
+        #crop_img = crop_img.save("/content/gdrive/MyDrive/Fake-Face-Detection-DeepFakes-CNN-master/faces/trainimage_"+str(img_number)+".jpg")
+        #test=cv2.imwrite('/content/gdrive/MyDrive/Fake-Face-Detection-DeepFakes-CNN-master/faces/train/image_{i}.png',crop_img)
+        #print(test)
+        
+    # Display  
+        cv2_imshow(crop_img) 
+        #img.save('/content/gdrive/MyDrive/Fake-Face-Detection-DeepFakes-CNN-master/faces/train'+ crop_img , 'JPEG')
+    # Stop if escape key is pressed  
+  k = cv2.waitKey(1000) & 0xff  
+  if k==27:  
+        break  
+         
+# Release the VideoCapture object  
+  cap.release()
