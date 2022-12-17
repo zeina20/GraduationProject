@@ -177,3 +177,28 @@ for video in all_videos:
     plt.legend(['Train','Val'],loc=4)
     plt.style.use(['classic'])
     plt.show()
+    
+    # Loads the weights and Evaluates the model's performance
+def load_weights(model,file_name, test, test_targets):
+    """
+    Load the best weights saved from during training the proposed CNN architecture and evaluates the model's performance.
+    
+    Args
+    ----------
+    model : Keras object
+        Holds the proposed CNN architecture.
+    
+    test : Numpy array
+        Holds the test images.
+    
+    test_targets : Numpy Array
+        Holds the images labels in a string format.
+    
+    Returns
+    -------
+    Empty.
+    """
+    model.load_weights('saved_models/' + file_name) # Load weights
+
+    score = model.evaluate(test, test_targets, verbose=0)
+    print('\n', 'Test accuracy:', score[1])
