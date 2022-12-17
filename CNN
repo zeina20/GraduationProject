@@ -202,3 +202,21 @@ def load_weights(model,file_name, test, test_targets):
 
     score = model.evaluate(test, test_targets, verbose=0)
     print('\n', 'Test accuracy:', score[1])
+    
+    import matplotlib.pyplot as plt
+import matplotlib.image as mpimg
+
+# Load original image
+img_1 = mpimg.imread(train_files[0])
+
+# Load fake image
+img_2 = mpimg.imread(train_files[2])
+
+# Print a subplot
+plt.figure(1)
+plt.subplot(211)
+plt.imshow(img_1)
+
+plt.subplot(212)
+plt.imshow(img_2)
+plt.show()
