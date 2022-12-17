@@ -75,3 +75,30 @@ print('There are %s total face images.\n' % len(np.hstack([train_files, valid_fi
 print('There are %d training face images.' % len(train_files))
 print('There are %d validation face images.' % len(valid_files))
 print('There are %d test face images.'% len(test_files))
+from PIL import Image
+import cv2  
+import glob
+import time
+from google.colab.patches import cv2_imshow  
+img_number=0
+# Load the cascade  
+face_cascade=cv2.CascadeClassifier(cv2.data.haarcascades + "haarcascade_frontalface_default.xml")
+#file path
+path='/content/gdrive/MyDrive/Fake-Face-Detection-DeepFakes-CNN-master/videos/train_sample_videos/'  
+all_videos=glob.glob(path + "*mp4")
+li=[]
+counter=0
+for video in all_videos:
+  # To capture video from existing video.  
+  cap = cv2.VideoCapture(video)  
+  counter=counter+1
+  print(counter)
+  #while True:  
+    # Read the frame 
+  _, img = cap.read()     
+  _, img = cap.read()
+  #cv2_imshow(img)  
+    # Convert to grayscale  
+    #gray = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)  
+ 
+    # Detect the faces 
